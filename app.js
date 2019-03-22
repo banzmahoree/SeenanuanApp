@@ -14,10 +14,10 @@ const result_failed = {
   };
 
 const conn = mysql.createConnection({
-     host:"localhost",
-     user:"root",
-     password:"",
-     database:"Seenanuan"
+     host:"us-cdbr-iron-east-03.cleardb.net",
+     user:"b167b8ebec0a40",
+     password:"c5f828ff",
+     database:"heroku_0a3c46200a1ba85"
 });
 
 
@@ -52,6 +52,18 @@ function vertifyToken(req,res,next){
 
 app.get('/',(req,res) =>{
    res.send("Hello you Complete");
+})
+app.get('/show',(req,res) => {
+  var sql = `SELECT * FROM users`;
+  conn.query(sql,function(err,result){
+    if (err) {
+      res.json(result_failed);
+    }else{
+     res.json(result);
+     console.log(result);
+    }
+   });
+
 })
 app.post('/login',(req,res) =>{
   console.log(req.body);
