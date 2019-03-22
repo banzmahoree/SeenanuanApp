@@ -48,7 +48,7 @@ function vertifyToken(req,res,next){
         next();
      })
 }
-    
+
 
 app.get('/',(req,res) =>{
    res.send("Hello you Complete");
@@ -87,7 +87,7 @@ app.post('/login',(req,res) =>{
             });
 });
 
-const PORT = process.env.PORT || 3003
-app.listen(PORT,() =>{
-    console.log("Server ruinning on"+PORT)
-})
+app.set('port', (process.env.PORT || 5000));
+app.listen(app.get('port'), function () {
+    console.log('run at port', app.get('port'));
+});
