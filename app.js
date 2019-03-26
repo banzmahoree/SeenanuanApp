@@ -7,7 +7,6 @@ var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 const secretKey = "SeenanunRestaruan";
 
-
 const result_failed = {
     result: "failed",
     data: ""
@@ -100,6 +99,19 @@ app.post('/login', (req,res) => {
                         }
                     }
                 })
+})
+
+app.post('/loaddetailem',(req,res)=>{
+    
+   var sql = `SELECT * FROM detailuser inner join positions on detailuser.status = positions.id`;
+
+   conn.query(sql, function(err,result){
+       if(err){
+           res.json(result_failed);
+       }else{
+           res.json(result);
+       }
+   })
 })
 
 app.set('port', (process.env.PORT || 3000));
