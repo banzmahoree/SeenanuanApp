@@ -63,41 +63,44 @@ app.get('/show',(req,res) => {
      console.log(result);
     }
    });
-
 })
-app.post('/login',(req,res) =>{
-  console.log(req.body);
-  var sql = `SELECT
-            id,username,password FROM users where username = '${req.body.username}'`;
-            conn.query(sql,function (err,result) {
-                if(err){
-                    res.json(result_failed)
-                }else{
-                    if(result.length > 0){
-                      const passwordIsvalid = bcrypt.compareSync(req.body.password,result[0].password);
-                      if(!passwordIsvalid) return res.json(result_failed);
 
-                      var _username = result[0].username;
-                      var _id = result[0].id;
+app.post('/login', (req,res) => {
+  var sql = `SELECT 
+                id,
+                username,
+                password
+                FROM users
+                where username = '${req.body.username}'`;
 
-                      var token = getToken({id:_id,username:_username})
-                      const finalResult ={
-                          result:"success",
-                          data:token
-                      };
-                      console.log(JSON.stringify(finalResult));
-                      res.json(finalResult);
+                conn.query(sql, function (err,result){
+                    if(err){
+                        res.json(result_failed);
                     }else{
-                        const finalResult = {
-                            result:"failed",
-                            data:""
-                        };
-                        console.log(JSON.stringify(finalResult));
-                        res.json(finalResult);
+                        if(result.length > 0){
+                         const passwordIsValid = bcrypt.compareSync(req.body.password,result[0].password);
+                         if(!passwordIsValid) return res.json(result_failed);
+                           
+                         var _username = result[0].username;
+                         var _id = result[0].id;
+                         var token = getToken({id:_id,username:_username})
+
+                         const finalResult = {
+                             result:"success",
+                             data:token
+                         };
+                         res.json(finalResult);
+                        
+                        }else{
+                            const finalResult = {
+                                result: "failed",
+                                data:""
+                            };
+                            res.json(finalResult);
+                        }
                     }
-                }
-            });
-});
+                })
+})
 
 app.set('port', (process.env.PORT || 3000));
 app.listen(app.get('port'), function () {
