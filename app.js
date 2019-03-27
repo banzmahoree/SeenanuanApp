@@ -65,7 +65,7 @@ app.get('/show',(req,res) => {
 })
 
 app.post('/login', (req,res) => {
-  var sql = `SELECT 
+  var sql = `SELECT
                 id,
                 username,
                 password
@@ -79,7 +79,7 @@ app.post('/login', (req,res) => {
                         if(result.length > 0){
                          const passwordIsValid = bcrypt.compareSync(req.body.password,result[0].password);
                          if(!passwordIsValid) return res.json(result_failed);
-                           
+
                          var _username = result[0].username;
                          var _id = result[0].id;
                          var token = getToken({id:_id,username:_username})
@@ -89,7 +89,7 @@ app.post('/login', (req,res) => {
                              data:token
                          };
                          res.json(finalResult);
-                        
+
                         }else{
                             const finalResult = {
                                 result: "failed",
@@ -102,7 +102,7 @@ app.post('/login', (req,res) => {
 })
 
 app.post('/loaddetailem',(req,res)=>{
-    
+
    var sql = `SELECT * FROM detailuser inner join positions on detailuser.status = positions.id`;
 
    conn.query(sql, function(err,result){
@@ -114,9 +114,9 @@ app.post('/loaddetailem',(req,res)=>{
    })
 })
 
-app.set('port', (process.env.PORT || 3000));
-app.listen(app.get('port'), function () {
-    console.log('run at port', app.get('port'));
+var server = app.listen(process.env.PORT || 5000, function () {
+  var port = server.address().port;
+  console.log("Express is working on port " + port);
 });
 
 module.exports = app;
