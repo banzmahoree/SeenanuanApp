@@ -101,7 +101,7 @@ app.post('/login', (req,res) => {
                 })
 })
 
-app.post('/loaddetailem',(req,res)=>{
+app.get('/loaddetailem',(req,res)=>{
 
    var sql = `SELECT * FROM detailuser inner join positions on detailuser.status = positions.id`;
 
